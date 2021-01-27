@@ -5,8 +5,6 @@
 ## AWS Dev Hour - On Twitch
 Do you have the skills it takes to build modern applications that are distributed and designed for scale and agility? If you’re interested in learning to build cloud native applications and architecture practices, join us for AWS Dev Hour: Building Modern Apps, a weekly Twitch show presented by AWS Training and Certification. Built by developers for developers, the series offers a hands-on approach. Over the course of 8 episodes, AWS expert hosts Ben Newton and May Kyaw will take you through the end-to-end build of a serverless application in the AWS cloud. You’ll have the chance to learn by doing, following along with the hosts and developing a cloud-native application using the AWS free tier. You’ll learn best practices for modern applications and better understand how AWS cloud-native applications differ from on-premises. Throughout the series, you’ll receive code, white papers, links to documentation, and other resources to help you progress. 
 
-### Please note: this repository is for the BACKEND If you are looking for the React Frontend, please go to: 
-[React Front End](https://github.com/aws-samples/aws-dev-hour-frontend)
 
 ## Architecture
 <img width="1042" alt="architecture-screenshot" src="https://awsdevhour.s3-accelerate.amazonaws.com/architecture.jpg">
@@ -72,13 +70,11 @@ https://docs.aws.amazon.com/cdk/latest/guide/bootstrapping.html
 
 1. `npm install` 
 
-2. Create your AWS Lambda Layer assets (See note below)
-
-3. `cdk deploy`
+2. `cdk deploy`
 
 A 'cdk deploy' will deploy everything that you need into your account
 
-4. You may now test the backend by uploading an image into your Amazon S3 bucket. 
+3. You may now test the backend by uploading an image into your Amazon S3 bucket. 
 
 ## Cleanup
 
