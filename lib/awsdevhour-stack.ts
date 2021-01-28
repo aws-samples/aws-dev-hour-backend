@@ -15,7 +15,9 @@ export class AwsdevhourStack extends cdk.Stack {
     // =====================================================================================
     // Image Bucket
     // =====================================================================================
-    const imageBucket = new s3.Bucket(this, imageBucketName)
+    const imageBucket = new s3.Bucket(this, imageBucketName, {
+      removalPolicy: cdk.RemovalPolicy.DESTROY
+    })
     new cdk.CfnOutput(this, 'imageBucket', { value: imageBucket.bucketName });
 
     // =====================================================================================
