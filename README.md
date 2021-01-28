@@ -80,7 +80,7 @@ A 'cdk deploy' will deploy everything that you need into your account
 
 To clean up the resources created by the CDK, run the following commands:
 ```bash
-aws s3 rm --recursive s3://imageBucket
+aws s3 rm --recursive s3://{imageBucket}
 cdk destroy
 ```
 (Enter “y” in response to: Are you sure you want to delete (y/n)?).
