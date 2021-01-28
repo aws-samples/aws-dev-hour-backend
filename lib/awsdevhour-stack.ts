@@ -22,7 +22,8 @@ export class AwsdevhourStack extends cdk.Stack {
     // Amazon DynamoDB table for storing image labels
     // =====================================================================================
     const table = new dynamodb.Table(this, 'ImageLabels', {
-      partitionKey: { name: 'image', type: dynamodb.AttributeType.STRING }
+      partitionKey: { name: 'image', type: dynamodb.AttributeType.STRING },
+      removalPolicy: cdk.RemovalPolicy.DESTROY
     });
     new cdk.CfnOutput(this, 'ddbTable', { value: table.tableName });
 
