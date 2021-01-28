@@ -17,7 +17,7 @@ export class AwsdevhourStack extends cdk.Stack {
     // =====================================================================================
     const imageBucket = new s3.Bucket(this, imageBucketName, {
       removalPolicy: cdk.RemovalPolicy.DESTROY
-    })
+    });
     new cdk.CfnOutput(this, 'imageBucket', { value: imageBucket.bucketName });
 
     // =====================================================================================
@@ -42,7 +42,7 @@ export class AwsdevhourStack extends cdk.Stack {
           "TABLE": table.tableName,
           "BUCKET": imageBucket.bucketName,
       },
-    })
+    });
     rekFn.addEventSource(new event_sources.S3EventSource(imageBucket, { events: [ s3.EventType.OBJECT_CREATED ]}));
     imageBucket.grantRead(rekFn);
     table.grantWriteData(rekFn);
