@@ -17,7 +17,6 @@ export class AwsdevhourStack extends cdk.Stack {
     // =====================================================================================
     const imageBucket = new s3.Bucket(this, imageBucketName)
     new cdk.CfnOutput(this, 'imageBucket', { value: imageBucket.bucketName });
-    const imageBucketArn = imageBucket.bucketArn;
 
     // =====================================================================================
     // Amazon DynamoDB table for storing image labels
