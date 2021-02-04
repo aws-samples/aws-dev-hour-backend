@@ -90,6 +90,8 @@ def rekFunction(ourBucket, ourKey):
     print('Currently processing the following image')
     print('Bucket: ' + ourBucket + ' key name: ' + safeKey)
 
+    detectLabelsResults = {}
+
     # Try and retrieve labels from Amazon Rekognition, using the confidence level we set in minConfidence var
     try:
         detectLabelsResults = rekognition_client.detect_labels(Image={'S3Object': {'Bucket':ourBucket, 'Name':safeKey}},
