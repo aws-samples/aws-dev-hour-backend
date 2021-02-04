@@ -8,6 +8,10 @@ from botocore.exceptions import ClientError
 import os
 from urllib.parse import unquote_plus
 from boto3.dynamodb.conditions import Key, Attr
+import uuid
+from PIL import Image
+
+thumbBucket = os.environ['RESIZEDBUCKET']
 
 # Set the minimum confidence for Amazon Rekognition
 
@@ -37,9 +41,46 @@ def handler(event, context):
         ourKey = record['s3']['object']['key']
 
         # For each bucket/key, retrieve labels
+        generateThumb(ourBucket, ourKey)
         rekFunction(ourBucket, ourKey)
 
     return
+
+def generateThumb(ourBucket, ourKey):
+
+    # Clean the string to add the colon back into requested name
+    safeKey = replaceSubstringWithColon(ourKey)
+
+    # Define upload and download paths
+    key = unquote_plus(safeKey)
+    tmpkey = key.replace('/', '')
+    download_path = '/tmp/{}{}'.format(uuid.uuid4(), tmpkey)
+    upload_path = '/tmp/resized-{}'.format(tmpkey)
+
+    # Download file from s3 and store it in Lambda /tmp storage (512MB avail)
+    try:
+        s3_client.download_file(ourBucket, key, download_path)
+    except ClientError as e:
+        logging.error(e)
+    # Create our thumbnail using Pillow library
+    resize_image(download_path, upload_path)
+
+    # Upload the thumbnail to the thumbnail bucket
+    try:
+        s3_client.upload_file(upload_path, thumbBucket, safeKey)
+    except ClientError as e:
+        logging.error(e)
+
+    # Be good little citizens and clean up files in /tmp so that we don't run out of space
+    os.remove(upload_path)
+    os.remove(download_path)
+
+    return
+
+def resize_image(image_path, resized_path):
+    with Image.open(image_path) as image:
+        image.thumbnail(tuple(x / 2 for x in image.size))
+        image.save(resized_path)
 
 def rekFunction(ourBucket, ourKey):
     

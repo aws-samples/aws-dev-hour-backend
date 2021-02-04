@@ -66,6 +66,36 @@ https://docs.aws.amazon.com/cdk/latest/guide/getting_started.html
 
 https://docs.aws.amazon.com/cdk/latest/guide/bootstrapping.html
 
+### AWS Lambda - Creating assets for your AWS Lambda Layer
+
+Our AWS Lambda function uses the Pillow library for the generation of thumbnail images. This library needs to be added into our project so that we can allow the CDK to package it and create an AWS Lambda Layer for us. To do this, you can use the following steps. (Please note, creating these resources in your AWS account could incur costs, although we have tried to select free-tier eligble resources here).
+
+1. Launch an Amazon EC2 Instance (t2-micro) using the Amazon Linux 2 AMI
+2. SSH into your instance and run the following commands:
+
+```bash
+sudo yum install -y python3-pip python3 python3-setuptools
+python3 -m venv my_app/env
+source ~/my_app/env/bin/activate
+cd my_app/env
+pip3 install pillow
+cd /home/ec2-user/my_app/env/lib/python3.7/site-packages
+mkdir python && cp -R ./PIL ./python && cp -R ./Pillow-8.1.0.dist-info ./python && cp -R ./Pillow.libs ./python && zip -r pillow.zip ./python
+```
+3. Copy the resulting archive 'pillow.zip' to your development environment (we used an Amazon S3 bucket for this)
+4. Extract the archive into the 'reklayer' folder in your project directory
+
+Your project structure should look something like this:
+
+```
+project-root/reklayer/python/PIL
+project-root/reklayer/python/Pillow-8.1.0.dist-info
+project-root/reklayer/python/Pillow.libs
+```
+
+5. Remove the python.zip file to clean up
+6. Terminate the Amazon EC2 Instance that you created to build the archive
+
 ## Getting Started
 
 1. `npm install` 
