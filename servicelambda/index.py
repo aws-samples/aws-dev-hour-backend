@@ -67,7 +67,7 @@ def deleteImage(image):
     # Delete item from table
 
     try:
-         table.delete_item(Key={'image': key})
+        table.delete_item(Key={'image': key})
 
     except ClientError as e:
         logging.error(e)
