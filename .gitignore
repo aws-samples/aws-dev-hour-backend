@@ -383,4 +383,4 @@ cdk.out
 
 ### Pillow exclusion
 
-reklayer/python
+/reklayer/**
