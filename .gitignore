@@ -380,3 +380,7 @@ package-lock.json
 yarn.lock
 .cdk.staging
 cdk.out
+
+### Pillow exclusion
+
+/reklayer/**
