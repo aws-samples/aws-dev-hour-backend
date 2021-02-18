@@ -8,7 +8,8 @@
     "build": "tsc",
     "watch": "tsc -w",
     "test": "jest",
-    "cdk": "cdk"
+    "cdk": "cdk",
+    "outputs": "aws cloudformation describe-stacks --stack-name AwsdevhourStack | jq '.Stacks | .[] | .Outputs | reduce .[] as $i ({}; .[$i.OutputKey] = $i.OutputValue)'"
   },
   "devDependencies": {
     "@aws-cdk/assert": "^1.90.0",

@@ -221,18 +221,6 @@ export class AwsdevhourStack extends cdk.Stack {
       })
     );
 
-    authenticatedRole.addToPolicy(
-      new iam.PolicyStatement({
-        effect: iam.Effect.ALLOW,
-        actions: [
-          "mobileanalytics:PutEvents",
-          "cognito-sync:*",
-          "cognito-identity:*",
-        ],
-        resources: ["*"],
-      })
-    );
-
     new cognito.CfnIdentityPoolRoleAttachment(this, "IdentityPoolRoleAttachment", {
       identityPoolId: identityPool.ref,
       roles: { authenticated: authenticatedRole.roleArn },
