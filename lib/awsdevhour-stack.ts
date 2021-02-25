@@ -66,7 +66,7 @@ export class AwsdevhourStack extends cdk.Stack {
       conditions: {
         'IpAddress': {
           'aws:SourceIp': [
-            '54.240.193.1/16' // Please change it to your IP address or from your allowed list
+            '*.*.*.*/*' // Please change it to your IP address or from your allowed list
             ]
         }
       }
