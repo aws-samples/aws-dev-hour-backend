@@ -9,9 +9,12 @@ import { AuthorizationType, PassthroughBehavior } from '@aws-cdk/aws-apigateway'
 import { CfnOutput } from "@aws-cdk/core";
 import { Duration } from '@aws-cdk/core';
 import apigw = require('@aws-cdk/aws-apigateway');
+import s3deploy = require('@aws-cdk/aws-s3-deployment');
+import { HttpMethods } from '@aws-cdk/aws-s3';
 
 const imageBucketName = "cdk-rekn-imgagebucket"
 const resizedBucketName = imageBucketName + "-resized"
+const websiteBucketName = "cdk-rekn-publicbucket"
 
 export class AwsdevhourStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
@@ -25,6 +28,12 @@ export class AwsdevhourStack extends cdk.Stack {
     });
     new cdk.CfnOutput(this, 'imageBucket', { value: imageBucket.bucketName });
     const imageBucketArn = imageBucket.bucketArn;
+    imageBucket.addCorsRule({
+      allowedMethods: [HttpMethods.GET, HttpMethods.PUT],
+      allowedOrigins: ["*"],
+      allowedHeaders: ["*"],
+      maxAge: 3000
+    });
     
     // =====================================================================================
     // Thumbnail Bucket
@@ -34,6 +43,44 @@ export class AwsdevhourStack extends cdk.Stack {
     });
     new cdk.CfnOutput(this, 'resizedBucket', {value: resizedBucket.bucketName});
     const resizedBucketArn = resizedBucket.bucketArn;
+    resizedBucket.addCorsRule({
+      allowedMethods: [HttpMethods.GET, HttpMethods.PUT],
+      allowedOrigins: ["*"],
+      allowedHeaders: ["*"],
+      maxAge: 3000
+    });
+    
+    // =====================================================================================
+    // Construct to create our Amazon S3 Bucket to host our website
+    // =====================================================================================
+    const webBucket = new s3.Bucket(this, websiteBucketName, {
+      websiteIndexDocument: 'index.html',
+      removalPolicy: cdk.RemovalPolicy.DESTROY
+      // publicReadAccess: true,
+    });
+    
+    webBucket.addToResourcePolicy(new iam.PolicyStatement({
+      actions: ['s3:GetObject'],
+      resources: [webBucket.arnForObjects('*')],
+      principals: [new iam.AnyPrincipal()],
+      conditions: {
+        'IpAddress': {
+          'aws:SourceIp': [
+            '54.240.193.1/16' // Please change it to your IP address or from your allowed list
+            ]
+        }
+      }
+      
+    }))
+    new cdk.CfnOutput(this, 'bucketURL', { value: webBucket.bucketWebsiteDomainName });
+    
+    // =====================================================================================
+    // Deploy site contents to S3 Bucket
+    // =====================================================================================
+    new s3deploy.BucketDeployment(this, 'DeployWebsite', {
+        sources: [ s3deploy.Source.asset('./public') ],
+        destinationBucket: webBucket
+    });
     
     // =====================================================================================
     // Amazon DynamoDB table for storing image labels
@@ -290,6 +337,6 @@ export class AwsdevhourStack extends cdk.Stack {
         }
       ]
     });
-    ​
+  
   }
 }
