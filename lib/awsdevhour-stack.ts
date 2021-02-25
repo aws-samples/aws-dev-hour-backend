@@ -55,6 +55,7 @@ export class AwsdevhourStack extends cdk.Stack {
     // =====================================================================================
     const webBucket = new s3.Bucket(this, websiteBucketName, {
       websiteIndexDocument: 'index.html',
+      websiteErrorDocument: 'index.html',
       removalPolicy: cdk.RemovalPolicy.DESTROY
       // publicReadAccess: true,
     });
