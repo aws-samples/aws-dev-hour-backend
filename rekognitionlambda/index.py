@@ -10,6 +10,7 @@ from urllib.parse import unquote_plus
 from boto3.dynamodb.conditions import Key, Attr
 import uuid
 from PIL import Image
+import json
 
 thumbBucket = os.environ['RESIZEDBUCKET']
 
@@ -36,9 +37,11 @@ def handler(event, context):
     print("Lambda processing event: ", event)
 
     # For each message (photo) get the bucket name and key
-    for record in event['Records']:
-        ourBucket = record['s3']['bucket']['name']
-        ourKey = record['s3']['object']['key']
+    for response in event['Records']:
+        formatted = json.loads(response['body'])
+        for record in formatted['Records']:
+            ourBucket = record['s3']['bucket']['name']
+            ourKey = record['s3']['object']['key']
 
         # For each bucket/key, retrieve labels
         generateThumb(ourBucket, ourKey)
