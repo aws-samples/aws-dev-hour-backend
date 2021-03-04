@@ -11,6 +11,8 @@ import { Duration } from '@aws-cdk/core';
 import apigw = require('@aws-cdk/aws-apigateway');
 import s3deploy = require('@aws-cdk/aws-s3-deployment');
 import { HttpMethods } from '@aws-cdk/aws-s3';
+import sqs = require('@aws-cdk/aws-sqs');
+import s3n = require('@aws-cdk/aws-s3-notifications');
 
 const imageBucketName = "cdk-rekn-imgagebucket"
 const resizedBucketName = imageBucketName + "-resized"
@@ -119,7 +121,6 @@ export class AwsdevhourStack extends cdk.Stack {
       },
     });
     
-    rekFn.addEventSource(new event_sources.S3EventSource(imageBucket, { events: [ s3.EventType.OBJECT_CREATED ]}));
     imageBucket.grantRead(rekFn);
     resizedBucket.grantPut(rekFn);
     table.grantWriteData(rekFn);
@@ -338,6 +339,32 @@ export class AwsdevhourStack extends cdk.Stack {
         }
       ]
     });
+    
+    // =====================================================================================
+    // Building SQS queue and DeadLetter Queue
+    // =====================================================================================
+    const dlQueue = new sqs.Queue(this, 'ImageDLQueue', {
+      queueName: 'ImageDLQueue'
+    })
+    ​
+    const queue = new sqs.Queue(this, 'ImageQueue', {
+      queueName: 'ImageQueue',
+      visibilityTimeout: cdk.Duration.seconds(30),
+      receiveMessageWaitTime: cdk.Duration.seconds(20),
+      deadLetterQueue: {
+        maxReceiveCount: 2,
+        queue: dlQueue
+      }
+    });
+    
+    // =====================================================================================
+    // Building S3 Bucket Create Notification to SQS
+    // =====================================================================================
+    imageBucket.addObjectCreatedNotification(new s3n.SqsDestination(queue), { prefix: 'private/' })
   
+    // =====================================================================================
+    // Lambda(Rekognition) to consume messages from SQS
+    // =====================================================================================
+    rekFn.addEventSource(new event_sources.SqsEventSource(queue));
   }
 }
