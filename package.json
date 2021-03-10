@@ -23,6 +23,8 @@
   },
   "dependencies": {
     "@aws-cdk/aws-apigateway": "^1.91.0",
+    "@aws-cdk/aws-codepipeline": "^1.92.0",
+    "@aws-cdk/aws-codepipeline-actions": "^1.92.0",
     "@aws-cdk/aws-cognito": "^1.91.0",
     "@aws-cdk/aws-dynamodb": "^1.91.0",
     "@aws-cdk/aws-iam": "^1.91.0",
@@ -33,6 +35,7 @@
     "@aws-cdk/aws-s3-notifications": "^1.91.0",
     "@aws-cdk/aws-sqs": "^1.91.0",
     "@aws-cdk/core": "^1.91.0",
+    "@aws-cdk/pipelines": "^1.92.0",
     "source-map-support": "^0.5.19"
   }
 }
