@@ -49,7 +49,8 @@ export class AwsdevhourBackendPipelineStack extends Stack {
       // Define build and synth commands
       synthAction: SimpleSynthAction.standardNpmSynth({
         sourceArtifact,
-        cloudAssemblyArtifact
+        cloudAssemblyArtifact,
+        buildCommand: 'cd ./reklayer && rm pillow-goes-here.txt && wget https://awsdevhour.s3-accelerate.amazonaws.com/pillow.zip && unzip pillow.zip && rm pillow.zip',
         // buildCommand: 'npm run build',
         // synthCommand: 'npm run cdk synth'
       })
