@@ -31,30 +31,6 @@ During each episode, we will be progressively building this full-stack applicati
 
 [Episode 7: Deployment Pipeline](https://github.com/aws-samples/aws-dev-hour-backend/tree/feature/episode7)
 
-In episode 7, we are building a deployment pipeline for our application. Before we start working on our pipeline, there are a few things to point out.
-####Prerequisites for Episode 7
-1. Github account
-2. Github personal access token. Token should have the scopes ```repo``` and ```admin:repo_hook```
-3. Github owner, repository name, branch name set up in [System Manager - Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) 
-4. Github personal access token set up in [Secret Manager](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html)
-
-####Notes
-we are using ```@aws-cdk/pipelines``` module to build a deployment pipeline. As of 11 March 2021, ```@aws-cdk/pipelines``` module is in Developer Preview. So you have to update in ```cdk.json``` as below to use new features of the CDK framework.
-```
-"@aws-cdk/core:newStyleStackSynthesis": "true"
-```
-You will also need to bootstrap the stack again to accommodate the new CDK pipeline experience by running this command
-```
-cdk bootstrap
-```
-
-RekLayer
-
-In this tutorial, we are using [Python Imaging Library](https://pypi.org/project/Pillow/) to add image processing capabilities to our application. As part of the deployment, you can manually download the pillow library and keep under /reklayer folder in this project. So, you can keep the build simple.
- 
- However, you can also download the pillow library when you set up the pipeline as shown in awsdevhour-backend-pipeline-stack.ts
-
-
 ### Services used during the series:
 
 - Amazon Cognito
@@ -144,6 +120,33 @@ project-root/reklayer/python/Pillow.libs
 A 'cdk deploy' will deploy everything that you need into your account
 
 3. You may now test the backend by uploading an image into your Amazon S3 bucket. 
+
+#### Prerequisites for Episode 7
+
+In episode 7, we are building a deployment pipeline for our application. Before we start working on our pipeline, there are a few things to point out. For this tutorial, you will need:
+
+1. Github account
+2. Github personal access token. Token should have the scopes ```repo``` and ```admin:repo_hook```
+3. Github owner, repository name, branch name set up in [System Manager - Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) 
+4. Github personal access token set up in [Secret Manager](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html)
+
+#### Notes
+
+In this tutorial, we are using ```@aws-cdk/pipelines``` module to build a deployment pipeline. As of 11 March 2021, ```@aws-cdk/pipelines``` module is in Developer Preview. So you have to update in ```cdk.json``` as below to use new features of the CDK framework.
+```
+"@aws-cdk/core:newStyleStackSynthesis": "true"
+```
+You will also need to bootstrap the stack again to accommodate the new CDK pipeline experience by running this command
+```
+cdk bootstrap
+```
+
+#### RekLayer
+
+In this tutorial, we are using [Python Imaging Library](https://pypi.org/project/Pillow/) to add image processing capabilities to our application. As part of the deployment, you can manually download the pillow library and keep under /reklayer folder in this project. So, you can keep the build simple.
+ 
+However, you can also download the pillow library when you set up the pipeline as shown in awsdevhour-backend-pipeline-stack.ts
+
 
 ## Cleanup
 
