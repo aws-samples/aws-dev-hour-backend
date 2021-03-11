@@ -168,7 +168,30 @@ To view your available stacks, you can run:
 ```
 cdk list
 ```
+** Pillow Library Note **
 
+In ```awsdevhour-backend-pipeline-stack.ts``` you will notice the following:
+
+```typescript
+      synthAction: SimpleSynthAction.standardNpmSynth({
+        sourceArtifact,
+        cloudAssemblyArtifact,
+        //This build command is to download pillow library, unzip the downloaded file and tidy up.
+        //If you already have pillow library downloaded under reklayer/, please just run 'npm run build'
+        buildCommand: 'rm ./reklayer/pillow-goes-here.txt && wget https://awsdevhour.s3-accelerate.amazonaws.com/pillow.zip && unzip pillow.zip && mv ./python ./reklayer && rm pillow.zip && npm run build',
+        synthCommand: 'npm run cdk synth'
+      })
+```
+If you already have the Pillow library under reklayer/python, then you don't need to run this. We added it to facilitate testing during the show. You could simply do the following:
+
+```typescript
+      synthAction: SimpleSynthAction.standardNpmSynth({
+        sourceArtifact,
+        cloudAssemblyArtifact,
+        buildCommand: 'npm run build',
+        synthCommand: 'npm run cdk synth'
+      })
+```
 
 #### RekLayer
 
