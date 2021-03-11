@@ -121,25 +121,54 @@ A 'cdk deploy' will deploy everything that you need into your account
 
 3. You may now test the backend by uploading an image into your Amazon S3 bucket. 
 
-#### Prerequisites for Episode 7
+## Prerequisites for Episode 7
 
 In episode 7, we are building a deployment pipeline for our application. Before we start working on our pipeline, there are a few things to point out. For this tutorial, you will need:
 
 1. Github account
 2. Github personal access token. Token should have the scopes ```repo``` and ```admin:repo_hook```
-3. Github owner, repository name, branch name set up in [System Manager - Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) 
-4. Github personal access token set up in [Secret Manager](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html)
+3. Github owner, repository name, branch name set up in [AWS Systems Manager - Parameter Store](https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html) 
+4. Github personal access token set up in [AWS Secrets Manager](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html)
 
-#### Notes
+### Parameter Store Examples
 
-In this tutorial, we are using ```@aws-cdk/pipelines``` module to build a deployment pipeline. As of 11 March 2021, ```@aws-cdk/pipelines``` module is in Developer Preview. So you have to update in ```cdk.json``` as below to use new features of the CDK framework.
+devhour-backend-git-repo   Value: aws-dev-hour-backend
+devhour-backend-git-branch   Value: main
+devhour-backend-git-owner   Value: your-github-username
+
+### Episode 7 Notes
+
+In this tutorial, we are using ```@aws-cdk/pipelines``` module to build a deployment pipeline. As of 11 March 2021, ```@aws-cdk/pipelines``` module is in Developer Preview. So you will need to set a feature flag in ```cdk.json``` as below to use new features of the CDK framework.
+
 ```
 "@aws-cdk/core:newStyleStackSynthesis": "true"
 ```
-You will also need to bootstrap the stack again to accommodate the new CDK pipeline experience by running this command
+
+You will also need to bootstrap the stack again to accommodate the new CDK pipeline experience by running this command:
+
 ```
 cdk bootstrap
 ```
+If you have deployed the stack already into your account using 'cdk deploy', you may need to destroy your stack so that the pipeline can build a fresh one. You can do this using the following command:
+
+```
+cdk destroy AwsdevhourStack
+```
+
+Once you have done this, you can deploy your pipeline stack by running the following command:
+
+```
+cdk deploy AwsdevhourBackendPipelineStack
+```
+
+While deploying, AWS CodePipeline will create a webhook with your Github repo. Subsequent pushes into your repo branch will update your stack automatically, even the pipeline will self-mutate.
+
+To view your available stacks, you can run:
+
+```
+cdk list
+```
+
 
 #### RekLayer
 
