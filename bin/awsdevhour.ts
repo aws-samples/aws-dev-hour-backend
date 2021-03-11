@@ -7,4 +7,3 @@ import { AwsdevhourBackendPipelineStack } from '../lib/awsdevhour-backend-pipeli
 const app = new cdk.App();
 new AwsdevhourStack(app, 'AwsdevhourStack');
 new AwsdevhourBackendPipelineStack(app, 'AwsdevhourBackendPipelineStack');
-

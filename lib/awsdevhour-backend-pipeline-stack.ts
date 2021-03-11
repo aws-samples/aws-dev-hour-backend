@@ -6,7 +6,7 @@ import {AwsdevhourBackendPipelineStage} from "./awsdevhour-backend-pipeline-stag
 import { StringParameter } from '@aws-cdk/aws-ssm';
 
 /**
- * Stack to define the Devhour-series1 application pipeline
+ * Stack to define the awsdevhour-backend application pipeline
  *
  * Prerequisite:
  *  Github personal access token should be stored in Secret Manager with id as below
@@ -41,7 +41,7 @@ export class AwsdevhourBackendPipelineStack extends Stack {
       sourceAction: new codepipeline_actions.GitHubSourceAction({
         actionName: 'GitHub',
         output: sourceArtifact,
-        oauthToken: SecretValue.secretsManager('devhour-backend-git-access-token', {jsonField: 'devHourSeries1-git-access-token'}), // this token is stored in Secret Manager
+        oauthToken: SecretValue.secretsManager('devhour-backend-git-access-token', {jsonField: 'devhour-backend-git-access-token'}), // this token is stored in Secret Manager
         owner: githubOwner,
         repo: githubRepo,
         branch: githubBranch
@@ -50,7 +50,9 @@ export class AwsdevhourBackendPipelineStack extends Stack {
       synthAction: SimpleSynthAction.standardNpmSynth({
         sourceArtifact,
         cloudAssemblyArtifact,
-        buildCommand: 'npm run build',
+        //This build command is to download pillow library, unzip the downloaded file and tidy up.
+        //If you already have pillow library downloaded under reklayer/, please just run 'npm run build'
+        buildCommand: 'rm ./reklayer/pillow-goes-here.txt && wget https://awsdevhour.s3-accelerate.amazonaws.com/pillow.zip && unzip pillow.zip && mv ./python ./reklayer && rm pillow.zip && npm run build',
         synthCommand: 'npm run cdk synth'
       })
     });

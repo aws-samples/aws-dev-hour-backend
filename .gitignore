@@ -376,11 +376,11 @@ $RECYCLE.BIN/
 ### CDK-specific ignores ###
 *.swp
 cdk.context.json
-package-lock.json
+#package-lock.json
 yarn.lock
 .cdk.staging
 cdk.out
 
 ### Pillow exclusion
 
-/reklayer/python/**
+#/reklayer/python/**
