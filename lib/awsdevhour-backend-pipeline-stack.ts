@@ -1,9 +1,10 @@
 import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
-import {Construct, SecretValue, Stack, StackProps} from '@aws-cdk/core';
-import {CdkPipeline, SimpleSynthAction} from "@aws-cdk/pipelines";
-import {AwsdevhourBackendPipelineStage} from "./awsdevhour-backend-pipeline-stage";
+import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
+import { CdkPipeline, SimpleSynthAction, ShellScriptAction } from "@aws-cdk/pipelines";
+import { AwsdevhourBackendPipelineStage } from "./awsdevhour-backend-pipeline-stage";
 import { StringParameter } from '@aws-cdk/aws-ssm';
+import { ManualApprovalAction } from '@aws-cdk/aws-codepipeline-actions';
 
 /**
  * Stack to define the Devhour-series1 application pipeline
@@ -56,6 +57,12 @@ export class AwsdevhourBackendPipelineStack extends Stack {
     });
     
     //Define application stage
-    pipeline.addApplicationStage(new AwsdevhourBackendPipelineStage(this, 'dev'))
+    const stage = pipeline.addApplicationStage(new AwsdevhourBackendPipelineStage(this, 'dev'));
+
+    stage.addActions(new ManualApprovalAction({
+      actionName: 'ManualApproval',
+      runOrder: stage.nextSequentialRunOrder(),
+    }));
+
   }
 }
