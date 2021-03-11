@@ -9,7 +9,7 @@
     "watch": "tsc -w",
     "test": "jest",
     "cdk": "cdk",
-    "outputs": "aws cloudformation describe-stacks --stack-name AwsdevhourStack | jq '.Stacks | .[] | .Outputs | reduce .[] as $i ({}; .[$i.OutputKey] = $i.OutputValue)'"
+    "outputs": "aws cloudformation describe-stacks --stack-name dev-AwsdevhourBackendPipelineStage | jq '.Stacks | .[] | .Outputs | reduce .[] as $i ({}; .[$i.OutputKey] = $i.OutputValue)'"
   },
   "devDependencies": {
     "@aws-cdk/assert": "^1.92.0",

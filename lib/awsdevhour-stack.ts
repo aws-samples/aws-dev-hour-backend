@@ -158,12 +158,6 @@ export class AwsdevhourStack extends cdk.Stack {
       handler: serviceFn,
       proxy: false,
     });
-
-    new CfnOutput(this, "GatewayUrl", {
-      value: api.url,
-    });
-
-
     
     // =====================================================================================
     // This construct builds a new Amazon API Gateway with AWS Lambda Integration
