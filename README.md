@@ -15,7 +15,7 @@ During each episode, we will be progressively building this full-stack applicati
 
 [AWS Dev Hour Schedule](https://pages.awscloud.com/traincert-twitch-dev-hour?sc_icampaign=event_twitch_devhour_launch_hosts&sc_channel=sm)
 
-####Git branch
+#### Git branch
 [Episode 1: CDK](https://github.com/aws-samples/aws-dev-hour-backend/tree/feature/episode1)
 
 [Episode 2: AWS Lambda & Amazon DynamoDB](https://github.com/aws-samples/aws-dev-hour-backend/tree/feature/episode2)
