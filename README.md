@@ -133,7 +133,7 @@ In episode 7, we are building a deployment pipeline for our application. Before 
 ### Parameter Store Examples
 
 - devhour-backend-git-repo   Value: aws-dev-hour-backend
-- devhour-backend-git-branch   Value: main
+- devhour-backend-git-branch   Value: main (Or whichever branch you would like your webhook)
 - devhour-backend-git-owner   Value: your-github-username
 
 ### Episode 7 Notes
