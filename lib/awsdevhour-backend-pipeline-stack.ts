@@ -1,4 +1,4 @@
-import * as codepipeline from '@aws-cdk/aws-codepipeline';
+import  * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
 import { CdkPipeline, SimpleSynthAction } from "@aws-cdk/pipelines";
@@ -61,10 +61,10 @@ export class AwsdevhourBackendPipelineStack extends Stack {
     //Define application stage
     const devStage = pipeline.addApplicationStage(new AwsdevhourBackendPipelineStage(this, 'dev'));
 
-    // devStage.addActions(new ManualApprovalAction({
-    //   actionName: 'ManualApproval',
-    //   runOrder: devStage.nextSequentialRunOrder(),
-    // }));
+    devStage.addActions(new ManualApprovalAction({
+      actionName: 'ManualApproval',
+      runOrder: devStage.nextSequentialRunOrder(),
+    }));
 
   }
 }
