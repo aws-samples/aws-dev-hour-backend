@@ -7,6 +7,7 @@ import { StringParameter } from '@aws-cdk/aws-ssm';
 import { ManualApprovalAction } from '@aws-cdk/aws-codepipeline-actions';
 
 /**
+ * Test
  * Stack to define the Devhour-series1 application pipeline
  *
  * Prerequisite:
