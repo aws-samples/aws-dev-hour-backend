@@ -54,6 +54,7 @@ export class AwsdevhourBackendPipelineStack extends Stack {
         cloudAssemblyArtifact
         // buildCommand: 'rm ./reklayer/pillow-goes-here.txt && wget https://awsdevhour.s3-accelerate.amazonaws.com/pillow.zip && unzip pillow.zip && mv ./python ./reklayer && rm pillow.zip',
         // synthCommand: 'npm run cdk synth'
+        // 
       })
     });
     
