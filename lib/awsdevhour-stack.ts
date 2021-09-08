@@ -97,7 +97,7 @@ export class AwsdevhourStack extends cdk.Stack {
     // =====================================================================================
     // Building our AWS Lambda Function; compute for our serverless microservice
     // =====================================================================================
-    const layer = new lambda.LayerVersion(this, 'pil', {
+    const layer = new lambda.LayerVersion(this, 'pillow', {
       code: lambda.Code.fromAsset('reklayer'),
       compatibleRuntimes: [lambda.Runtime.PYTHON_3_7],
       license: 'Apache-2.0',

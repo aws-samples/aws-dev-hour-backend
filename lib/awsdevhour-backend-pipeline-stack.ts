@@ -51,19 +51,17 @@ export class AwsdevhourBackendPipelineStack extends Stack {
       // Define build and synth commands
       synthAction: SimpleSynthAction.standardNpmSynth({
         sourceArtifact,
-        cloudAssemblyArtifact,
-        buildCommand: 'npm run build',
-        synthCommand: 'npm run cdk synth'
+        cloudAssemblyArtifact
       })
     });
     
     //Define application stage
     const stage = pipeline.addApplicationStage(new AwsdevhourBackendPipelineStage(this, 'dev'));
 
-    stage.addActions(new ManualApprovalAction({
-      actionName: 'ManualApproval',
-      runOrder: stage.nextSequentialRunOrder(),
-    }));
+    // stage.addActions(new ManualApprovalAction({
+    //   actionName: 'ManualApproval',
+    //   runOrder: stage.nextSequentialRunOrder(),
+    // }));
 
   }
 }
