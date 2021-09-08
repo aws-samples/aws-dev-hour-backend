@@ -15,6 +15,7 @@ import json
 thumbBucket = os.environ['RESIZEDBUCKET']
 
 # Set the minimum confidence for Amazon Rekognition
+#
 
 minConfidence = 50
 
