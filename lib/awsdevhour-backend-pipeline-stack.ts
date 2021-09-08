@@ -1,13 +1,14 @@
-import  * as codepipeline from '@aws-cdk/aws-codepipeline';
+import * as codepipeline from '@aws-cdk/aws-codepipeline';
 import * as codepipeline_actions from '@aws-cdk/aws-codepipeline-actions';
 import { Construct, SecretValue, Stack, StackProps } from '@aws-cdk/core';
-import { CdkPipeline, SimpleSynthAction } from "@aws-cdk/pipelines";
+import { CdkPipeline, SimpleSynthAction, ShellScriptAction } from "@aws-cdk/pipelines";
 import { AwsdevhourBackendPipelineStage } from "./awsdevhour-backend-pipeline-stage";
 import { StringParameter } from '@aws-cdk/aws-ssm';
 import { ManualApprovalAction } from '@aws-cdk/aws-codepipeline-actions';
 
 /**
- * Stack to define the awsdevhour-backend application pipeline
+ * Test
+ * Stack to define the Devhour-series1 application pipeline
  *
  * Prerequisite:
  *  Github personal access token should be stored in Secret Manager with id as below
@@ -42,7 +43,7 @@ export class AwsdevhourBackendPipelineStack extends Stack {
       sourceAction: new codepipeline_actions.GitHubSourceAction({
         actionName: 'GitHub',
         output: sourceArtifact,
-        oauthToken: SecretValue.secretsManager('devhour-backend-git-access-token', {jsonField: 'devhour-backend-git-access-token'}), // this token is stored in Secret Manager
+        oauthToken: SecretValue.secretsManager('devhour-backend-git-access-token', {jsonField: 'devHourSeries1-git-access-token'}), // this token is stored in Secret Manager
         owner: githubOwner,
         repo: githubRepo,
         branch: githubBranch
@@ -51,20 +52,18 @@ export class AwsdevhourBackendPipelineStack extends Stack {
       synthAction: SimpleSynthAction.standardNpmSynth({
         sourceArtifact,
         cloudAssemblyArtifact,
-        //This build command is to download pillow library, unzip the downloaded file and tidy up.
-        //If you already have pillow library downloaded under reklayer/, please just run 'npm run build'
-        buildCommand: 'rm ./reklayer/pillow-goes-here.txt && wget https://awsdevhour.s3-accelerate.amazonaws.com/pillow.zip && unzip pillow.zip && mv ./python ./reklayer && rm pillow.zip && npm run build',
+        buildCommand: 'rm -rf ./reklayer/* && wget https://awsdevhour.s3-accelerate.amazonaws.com/pillow.zip && unzip pillow.zip && mv ./python ./reklayer && rm pillow.zip && npm run build',
         synthCommand: 'npm run cdk synth'
       })
     });
     
     //Define application stage
-    const devStage = pipeline.addApplicationStage(new AwsdevhourBackendPipelineStage(this, 'dev'));
+    const stage = pipeline.addApplicationStage(new AwsdevhourBackendPipelineStage(this, 'dev'));
 
-    devStage.addActions(new ManualApprovalAction({
-      actionName: 'ManualApproval',
-      runOrder: devStage.nextSequentialRunOrder(),
-    }));
+    // stage.addActions(new ManualApprovalAction({
+    //   actionName: 'ManualApproval',
+    //   runOrder: stage.nextSequentialRunOrder(),
+    // }));
 
   }
 }
