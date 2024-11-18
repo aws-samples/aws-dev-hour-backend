@@ -7,7 +7,7 @@ Do you have the skills it takes to build modern applications that are distribute
 
 
 ## Architecture
-<img width="1042" alt="architecture-screenshot" src="https://awsdevhour.s3-accelerate.amazonaws.com/architecture.jpg">
+<img width="1042" alt="architecture-screenshot" src="https://awsdevhour-twitch.s3.ap-southeast-2.amazonaws.com/architecture.jpg">
 
 ## Episodes
 
@@ -178,7 +178,7 @@ In ```awsdevhour-backend-pipeline-stack.ts``` you will notice the following:
         cloudAssemblyArtifact,
         //This build command is to download pillow library, unzip the downloaded file and tidy up.
         //If you already have pillow library downloaded under reklayer/, please just run 'npm run build'
-        buildCommand: 'rm ./reklayer/pillow-goes-here.txt && wget https://awsdevhour.s3-accelerate.amazonaws.com/pillow.zip && unzip pillow.zip && mv ./python ./reklayer && rm pillow.zip && npm run build',
+        buildCommand: 'rm ./reklayer/pillow-goes-here.txt && wget https://awsdevhour-twitch.s3.ap-southeast-2.amazonaws.com/pillow.zip && unzip pillow.zip && mv ./python ./reklayer && rm pillow.zip && npm run build',
         synthCommand: 'npm run cdk synth'
       })
 ```
