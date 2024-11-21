@@ -119,7 +119,10 @@ project-root/reklayer/python/Pillow.libs
 
 A 'cdk deploy' will deploy everything that you need into your account
 
-3. You may now test the backend by uploading an image into your Amazon S3 bucket. 
+3. You may now test the backend by uploading an image into your Amazon S3 bucket.
+
+To view the output of lambda function into dynamodb, run the command:
+aws dynamodb scan --table-name {tableName}
 
 ## Prerequisites for Episode 7
 
